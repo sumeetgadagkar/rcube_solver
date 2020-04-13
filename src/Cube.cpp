@@ -4,8 +4,12 @@
 
 #include "Cube.hpp"
 
-Cube::Cube():faces(6){
+//TODO: 1. Allow user to provide multiple moves at once(overload makeMove)
+//  2. Allow user to store the state of the cube
+//  3. Allow the user to check if two cube states are equal
+//  3. Allow the user to query if cube is solved
 
+Cube::Cube():faces(6){
     // Initialize the cube's faces
     for(int i = 0; i < 6; i++){
         this->faces[i].setAllTiles(i);
@@ -44,7 +48,7 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
             }
             else{
                 // Pretty printing
-                this->prettyPrint(this->faces[4].state[i][j], is256ColorSupported);
+                Cube::prettyPrint(this->faces[4].state[i][j], is256ColorSupported);
             }
             printf(" ");
         }
@@ -75,7 +79,7 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
     int idx = 0;
 
     // Print the matrix
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++){ // NOLINT(modernize-loop-convert)
         for (int j = -1; j < 3; j++){
             for (int k = 0; k < 3; k ++){
 
@@ -92,7 +96,7 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
                 }
                 else{
                     // Pretty printing
-                    this->prettyPrint(this->faces[idx].state[i][k], is256ColorSupported);
+                    Cube::prettyPrint(this->faces[idx].state[i][k], is256ColorSupported);
                 }
                 printf(" ");
             }
@@ -125,16 +129,16 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
     printf("          ");
     printf("----------\n");
 
-    for (int i = 0; i < 3; i++){
+    for (auto & i : this->faces[5].state){
         printf("           ");
-        for (int j = 0; j < 3; j++){
+        for (int j : i){
             if(!pretty){
                 // Non pretty printing
-                printf("%d ", this->faces[5].state[i][j]);
+                printf("%d ", j);
             }
             else{
                 // Pretty printing
-                this->prettyPrint(this->faces[5].state[i][j], is256ColorSupported);
+                Cube::prettyPrint(j, is256ColorSupported);
             }
             printf(" ");
         }
@@ -227,8 +231,8 @@ void Cube::randomizeCube(){
     printf("randomizing\n");
 };
 
-void Cube::makeMove(std::string move){
-    if (0 == move.compare("U")){
+void Cube::makeMove(const std::string& move){
+    if ("U" == move){
         // Perform the move U
 
         // Top face clockwise 90deg
@@ -243,7 +247,7 @@ void Cube::makeMove(std::string move){
         // Swap first row of front face with the top row of right face
         this->swapRowCols(1, 4, 0, 0);
     }
-    else if (0 == move.compare("R")){
+    else if ("R" == move){
         // Perform the move R
 
         // Right face clockwise 90deg
@@ -258,8 +262,8 @@ void Cube::makeMove(std::string move){
         // Swap the last column of the top face with the last column of the front face
         this->swapRowCols(0, 1, 5, 5);
     }
-    else if (0 == move.compare("F")){
-        // Perfrom the move F
+    else if ("F" == move){
+        // Perform the move F
 
         // Front face clockwise 90deg
         this->faces[1].rotateClockwise();
@@ -273,8 +277,8 @@ void Cube::makeMove(std::string move){
         // Swap the last row of the top face with the last column of the left face with inversion
         this->swapRowCols(0, 5, 2, 5, true);
     }
-    else if (0 == move.compare("D")){
-        // Perfrom the move D
+    else if ("D" == move){
+        // Perform the move D
 
         // Down face clockwise 90deg
         this->faces[2].rotateClockwise();
@@ -288,7 +292,7 @@ void Cube::makeMove(std::string move){
         // Swap front face last row with left face last row
         this->swapRowCols(1, 5, 2, 2);
     }
-    else if (0 == move.compare("L")){
+    else if ("L" == move){
         // Perform the move L
 
         // Left face clockwise 90deg
@@ -303,7 +307,7 @@ void Cube::makeMove(std::string move){
         // Swap the top face first column with back face last column with inversion
         this->swapRowCols(0, 3, 3, 5, true);
     }
-    else if(0 == move.compare("B")){
+    else if("B" == move){
         // Perform the B move
 
         // Back face clockwise 90deg
@@ -318,7 +322,7 @@ void Cube::makeMove(std::string move){
         // Swap top face first row with right face last column with inversion
         this->swapRowCols(0, 4, 0, 5);
     }
-    else if (0 == move.compare("U'")){
+    else if ("U'" == move){
         // Perform the U' move
 
         // Top face anticlockwise 90deg
@@ -333,7 +337,7 @@ void Cube::makeMove(std::string move){
         // Swap the front face first row with the left face first row
         this->swapRowCols(1, 5, 0, 0);
     }
-    else if(0 == move.compare("R'")){
+    else if("R'" == move){
         // Perform the R' move
 
         // Right face anticlockwise 90deg
@@ -348,7 +352,7 @@ void Cube::makeMove(std::string move){
         // Swap the last column of the top face with the first column of the back face
         this->swapRowCols(0, 3, 5, 3, true);
     }
-    else if (0 == move.compare("F'")){
+    else if ("F'" == move){
         // Perform the F' move
 
         // Front face anticlockwise 90deg
@@ -363,7 +367,7 @@ void Cube::makeMove(std::string move){
         // Swap top face last row with right face first column with inversion
         this->swapRowCols(0, 4, 2, 3);
     }
-    else if (0 == move.compare("D'")){
+    else if ("D'" == move){
         // Perform the D' move
 
         // Down face anticlockwise 90deg
@@ -378,7 +382,7 @@ void Cube::makeMove(std::string move){
         // Swap front face last row and right face last row
         this->swapRowCols(1, 4, 2, 2);
     }
-    else if (0 == move.compare("L'")){
+    else if ("L'" == move){
         // Perform the L' move
 
         // Swap left face anticlockwise 90deg
@@ -393,7 +397,7 @@ void Cube::makeMove(std::string move){
         // Swap top face first column and front face first column
         this->swapRowCols(0, 1, 3, 3);
     }
-    else if (0 == move.compare("B'")){
+    else if ("B'" == move){
         // Perform the B' move
 
         // Back face anticlckwise 90 deg
@@ -407,48 +411,48 @@ void Cube::makeMove(std::string move){
 
         // Swap top face first row and left face first column with inversion
         this->swapRowCols(0, 5, 0, 3, true);
-    }else if(0 == move.compare("U2")){
+    }else if("U2" == move){
         // Perform move U2
 
-        // Perfrom move U twice
+        // Perform move U twice
         this->makeMove("U");
         this->makeMove("U");
     }
-    else if(0 == move.compare("R2")){
+    else if("R2" == move){
         // Perform move R2
 
-        // Perfrom move R twice
+        // Perform move R twice
         this->makeMove("R");
         this->makeMove("R");
     }
-    else if(0 == move.compare("F2")){
+    else if("F2" == move){
         // Perform move F2
 
-        // Perfrom move F twice
+        // Perform move F twice
         this->makeMove("F");
         this->makeMove("F");
-    }else if(0 == move.compare("D2")){
+    }else if("D2" == move){
         // Perform move D2
 
-        // Perfrom move D twice
+        // Perform move D twice
         this->makeMove("D");
         this->makeMove("D");
     }
-    else if(0 == move.compare("L2")){
+    else if("L2" == move){
         // Perform move L2
 
         // Perform move L twice
         this->makeMove("L");
         this->makeMove("L");
     }
-    else if(0 == move.compare("B2")){
+    else if("B2" == move){
         // Perform move B2
 
-        // Perfrom move B twice
+        // Perform move B twice
         this->makeMove("B");
         this->makeMove("B");
     }
-    else if (0 == move.compare("M")){
+    else if ("M" == move){
         // Perform the M move
 
         // Swap top face middle column and front face middle column
@@ -460,7 +464,7 @@ void Cube::makeMove(std::string move){
         // Swap top face middle column and back face middle column with inversion
         this->swapRowCols(0, 3, 4, 4, true);
     }
-    else if (0 == move.compare("M'")){
+    else if ("M'" == move){
         // Perform the M' move
 
         // Swap bottom face middle column and front face middle column
@@ -472,7 +476,7 @@ void Cube::makeMove(std::string move){
         // Swap bottom face middle column and back face middle column with inversion
         this->swapRowCols(2, 3, 4, 4, true);
     }
-    else if (0 == move.compare("E")){
+    else if ("E" == move){
         // Perform the move E
 
         // Swap the front face middle row and the right face middle row
@@ -484,7 +488,7 @@ void Cube::makeMove(std::string move){
         // Swap the front face middle row and the left face middle row
         this->swapRowCols(1, 5, 1, 1);
     }
-    else if (0 == move.compare("E'")){
+    else if ("E'" == move){
         // Perform the E' move
 
         // Swap the front face middle row to the left face middle row
@@ -496,7 +500,7 @@ void Cube::makeMove(std::string move){
         // Swap the front face middle row to the right face middle row
         this->swapRowCols(1, 4, 1, 1);
     }
-    else if (0 == move.compare("S")){
+    else if ("S" == move){
         // Perform the move S
 
         // Swap top face middle row and right face middle column
@@ -508,7 +512,7 @@ void Cube::makeMove(std::string move){
         // Swap the top face middle row and left face middle column with inversion
         this->swapRowCols(0, 5, 1, 4, true);
     }
-    else if (0 == move.compare("S'")){
+    else if ("S'" == move){
         // Perform the move S'
 
         // Swap the top face middle row and left face middle column with inversion
@@ -520,141 +524,137 @@ void Cube::makeMove(std::string move){
         // Swap the top face middle row and right face middle column with inversion
         this->swapRowCols(0, 4, 1, 4);
     }
-    else if (0 == move.compare("u")){
+    else if ("u" == move){
         // Perform move u
 
         // Perform move U and E'
         this->makeMove("U");
         this->makeMove("E'");
     }
-    else if (0 == move.compare("u'")){
+    else if ("u'" == move){
         // Perform move u'
 
         // Perform move U' and E
         this->makeMove("U'");
         this->makeMove("E");
     }
-    else if (0 == move.compare("r")){
+    else if ("r" == move){
         // Perform move r
 
         // Perform move R and M'
         this->makeMove("R");
         this->makeMove("M'");
     }
-    else if (0 == move.compare("r'")){
+    else if ("r'" == move){
         // Perform move r'
 
         // Perform move R' and M
         this->makeMove("R'");
         this->makeMove("M");
     }
-    else if (0 == move.compare("f")){
+    else if ("f" == move){
         // Perform move f
 
         // Perform move F and S
         this->makeMove("F");
         this->makeMove("S");
     }
-    else if (0 == move.compare("f'")){
+    else if ("f'" == move){
         // Perform move f'
 
         // Perform move F' and S'
         this->makeMove("F'");
         this->makeMove("S'");
     }
-    else if (0 == move.compare("d")){
+    else if ("d" == move){
         // Perform move d
 
         // Perform move D and E
         this->makeMove("D");
         this->makeMove("E");
     }
-    else if (0 == move.compare("d'")){
+    else if ("d'" == move){
         // Perform move d'
 
         // Perform move D' and E'
         this->makeMove("D'");
         this->makeMove("E'");
     }
-    else if (0 == move.compare("l")){
+    else if ("l" == move){
         // Perform move l
 
         // Perform move L and M
         this->makeMove("L");
         this->makeMove("M");
     }
-    else if (0 == move.compare("l'")){
+    else if ("l'" == move){
         // Perform move l'
 
         // Perform move L' and M'
         this->makeMove("L'");
         this->makeMove("M'");
     }
-    else if (0 == move.compare("b")){
+    else if ("b" == move){
         // Perform move b
 
         // Perform move B and S'
         this->makeMove("B");
         this->makeMove("S'");
     }
-    else if (0 == move.compare("b'")){
+    else if ("b'" == move){
         // Perform move b'
 
         // Perform move B' and S
         this->makeMove("B'");
         this->makeMove("S");
     }
-    else if (0 == move.compare("x")){
+    else if ("x" == move){
         // Perform move x
 
-        // Swap the top and back face
-        std::swap(this->faces[0], this->faces[3]);
-
-        // Swap the top and down faces
-        std::swap(this->faces[0], this->faces[2]);
-
-        // Swap the top and front faces
-        std::swap(this->faces[0], this->faces[1]);
-
-        // Right face clockwise 90deg
-        this->faces[4].rotateClockwise();
-
-        // Left face anticlockwise 90deg
-        this->faces[5].rotateAntiClockwise();
-
-        // Back face rotate 180deg
-        this->faces[3].rotateClockwise();
-        this->faces[3].rotateClockwise();
-
-        // Down face rotate 180deg
-        this->faces[2].rotateClockwise();
-        this->faces[2].rotateClockwise();
+        // Perform the moves R, L' and M'
+        this->makeMove("R");
+        this->makeMove("L'");
+        this->makeMove("M'");
     }
-    else if (0 == move.compare("x'")){
+    else if ("x'" == move){
         // Perform move x'
 
-        // Swap top and front face
-        std::swap(this->faces[0], this->faces[1]);
+        // Perform the moves R', L and M
+        this->makeMove("R'");
+        this->makeMove("L");
+        this->makeMove("M");
+    }
+    else if ("y" == move){
+        // Perform the move y
 
-        // Swap top and down faces
-        std::swap(this->faces[0], this->faces[2]);
+        // Perform the moves U, D' and E'
+        this->makeMove("U");
+        this->makeMove("D'");
+        this->makeMove("E'");
+    }
+    else if ("y'" == move){
+        // Perform the move y'
 
-        // Swap top and back faces
-        std::swap(this->faces[0], this->faces[3]);
+        // Perform the moves U', D and E
+        this->makeMove("U'");
+        this->makeMove("D");
+        this->makeMove("E");
+    }
+    else if ("z" == move){
+        // Perform the move z
 
-        // Right face anticlockwise 90deg
-        this->faces[4].rotateAntiClockwise();
+        // Perform the moves F, S and B'
+        this->makeMove("F");
+        this->makeMove("S");
+        this->makeMove("B'");
+    }
+    else if ("z'" == move){
+        // Perform the move z'
 
-        // Left face clockwise 90deg
-        this->faces[5].rotateClockwise();
-
-        // Back face rotate 180deg
-        this->faces[3].rotateClockwise();
-        this->faces[3].rotateClockwise();
-
-        // Top face rotate 180deg
-        this->faces[0].rotateClockwise();
-        this->faces[0].rotateClockwise();
+        // Perform the moves F', S' and B
+        this->makeMove("F'");
+        this->makeMove("S'");
+        this->makeMove("B");
     }
     else{
         printf("\nInvalid Move requested!\n");

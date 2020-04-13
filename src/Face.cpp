@@ -11,9 +11,9 @@ int Face::getCenter(){
 
 // Method to set all the tiles of the face
 void Face::setAllTiles(int num){
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            this->state[i][j] = num;
+    for(auto & i : this->state){
+        for(int & j : i){
+            j = num;
         }
     }
 }
