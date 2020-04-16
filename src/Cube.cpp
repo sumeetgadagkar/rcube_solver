@@ -1,6 +1,7 @@
-//
-// Created by sumeet on 12/04/20.
-//
+/*
+ *  Definition of Cube class
+ *  Author : zoroppz
+ */
 
 #include "Cube.hpp"
 
