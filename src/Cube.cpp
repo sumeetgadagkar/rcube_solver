@@ -4,18 +4,74 @@
 
 #include "Cube.hpp"
 
-//TODO:
-//  1. Allow user to store the state of the cube
-//  2. Allow the user to check if two cube states are equal
-//  3. Allow the user to query if cube is solved
-//  4. Allow user to instantiate cube object with user defined state
-//  5. Implement randomizeCube method
-
 Cube::Cube(): faces(6){
     // initialize the cube's faces
     for(int i = 0; i < 6; i++){
         this->faces[i].setAllTiles(i);
     }
+}
+
+Cube::Cube(std::vector<int>& cubeState): faces(6) {
+    // constructor which accepts initial state of the cube
+
+    // the cube structure is defined as such
+    //          9 8 7
+    //          6 R 4
+    //          3 2 1
+    //          - - -
+    //  7 4 1 | 3 6 9 | 3 6 9 | 3 6 9
+    //  8 B 2 | 2 U 8 | 2 F 8 | 2 D 8
+    //  9 6 3 | 1 4 7 | 1 4 7 | 1 4 7
+    //          - - -
+    //          1 2 3
+    //          4 L 6
+    //          7 8 9
+
+    // the input should be a <int> vector of length 54
+    // the first 9 elements denote the top face in the order shown in the diagram
+    // the second 9 elements denote the front face in the order shown in the diagram
+    // the third 9 elements denote the down face in the order shown in the diagram
+    // the forth 9 elements denote the back face in the order shown in the diagram
+    // the fifth 9 elements denote the right face in the order shown in the diagram
+    // the sixth 9 elements denote the left face in the order shown in the diagram
+
+    for (int i = 0; i < 6; i++){
+        for (int j = 0; j < 3; j++){
+            for (int k = 0; k < 3; k++){
+                this->faces[i].state[j][k] = cubeState[i*9 + j*3 + k];
+            }
+        }
+    }
+}
+
+Cube::Cube(const Cube &cube){
+    // copy constructor to enable cube state comparison
+    this->faces = cube.faces;
+}
+
+bool operator== (const Cube &cube1, const Cube &cube2){
+    // set isEqual to true
+    bool isEqual = true;
+
+    // check if the cube faces are equal
+    for (int i = 0; i < 6; i++){
+        if (!(cube1.faces[i] == cube2.faces[i])){
+            isEqual = false;
+        }
+    }
+
+    return  isEqual;
+}
+
+bool Cube::isSolved() {
+    // set isSolved to true
+    bool isSolved = true;
+
+    for (auto face : this->faces){
+        isSolved &= face.isSolved();
+    }
+
+    return isSolved;
 }
 
 void Cube::printCube(bool pretty, bool is256ColorSupported){
@@ -229,7 +285,22 @@ void Cube::prettyPrint(int num, bool is256ColorSupported){
 }
 
 void Cube::randomizeCube(std::vector<std::string>& movesMade){
+    // container for moves to make
+    std::vector<std::string> movesToMake;
 
+    // randomly pick 20 valid moves from Cube::ValidMoves and perform them on the cube
+    unsigned int seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::default_random_engine rng(seed);
+
+    // randomly pick 20 moves moves from valid moves
+    for (int i = 0; i < 20; i++){
+        auto idx = rng() % validMoves.size();
+        movesToMake.push_back(validMoves[idx]);
+        movesMade.push_back(validMoves[idx]);
+    }
+
+    // make the moves
+    this->makeMove(movesToMake);
 }
 
 void Cube::randomizeCube(){

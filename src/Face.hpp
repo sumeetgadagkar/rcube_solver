@@ -18,7 +18,6 @@ public:
         // [0][2] - top row right corner
         // [1][0] - middle row left
         // ...
-
     int getCenter(); // return color of the center tile of the face
         // 0 - white
         // 1 - blue
@@ -26,20 +25,16 @@ public:
         // 3 - green
         // 4 - orange
         // 5 - red
-
     void setAllTiles(int num); // set all the tiles of the face to the value provided
-
     void rotateClockwise(); // rotate the face clockwise(top left corner -> top right corner)
-
     void rotateAntiClockwise(); // rotate the face counter clockwise (top right corner -> top left corner)
+    friend bool operator== (const Face &face1, const Face &face2); // equality operator to check if two cubes have the same state
+    bool isSolved(); // check if all the tiles in the face have the same color
 
 private:
     void swapStateElement(int a, int b, int c, int d); // swap element [a][b] with [c][d]
-
     void transposeState(); // transpose the face state matrix
-
     void swapRow(int a, int b); // swap row a and b
-
     void swapColumn(int a, int b); // swap column a and b
 };
 

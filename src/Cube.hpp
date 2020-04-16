@@ -19,15 +19,17 @@ class Cube {
 public:
 
     Cube(); // constructor
+    Cube(std::vector<int>& cubeState); // constructor which accepts initial state of the cube
+    Cube(const Cube &cube); // copy constructor
     void makeMove(const std::string& move); // perform a single move on the cube e.g. <cube_obj>.makeMove("U")
     void makeMove(const std::initializer_list<std::string> &moves); // perform a set of moves on the cube e.g. <cube_obj>.makeMove({"U", "R",...})
     void makeMove(const std::vector<std::string> &moves); // perform a set of moves on the cube e.g. <cube_obj>.makeMove(<string vector of moves>)
     void printCube(bool pretty = false, bool is256ColorSupported = false); // print the current state of the cube
     void randomizeCube(std::vector<std::string>& movesMade); // randomly pick 20 valid moves from Cube::validMoves and perform them on the cube and adds the moves made to <movesMade>
     void randomizeCube(); // randomly pick 20 valid moves from Cube::validMoves and perform them on the cube
+    bool isSolved(); // check if cube is solved
+    friend bool operator== (const Cube &cube1, const Cube &cube2); // equality operator to check if two cubes have the same state
     virtual ~Cube(); // destructor
-
-private:
 
     std::vector<Face> faces; // vector of class Face to represent the six faces of the cube
     // faces[0] - up face
@@ -37,6 +39,8 @@ private:
     // faces[4] - right face
     // faces[5] - left face
 
+
+private:
     void swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOrder = false); // swap rows and columns of the cube
     static void prettyPrint(int num, bool is256ColorSupported); // pretty printing of cube state with colors
 };
