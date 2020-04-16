@@ -45,34 +45,9 @@ Cube::Cube(std::vector<int>& cubeState): faces(6) {
     }
 }
 
-Cube::Cube(const Cube &cube){
+Cube::Cube(const Cube &cube) {
     // copy constructor to enable cube state comparison
     this->faces = cube.faces;
-}
-
-bool operator== (const Cube &cube1, const Cube &cube2){
-    // set isEqual to true
-    bool isEqual = true;
-
-    // check if the cube faces are equal
-    for (int i = 0; i < 6; i++){
-        if (!(cube1.faces[i] == cube2.faces[i])){
-            isEqual = false;
-        }
-    }
-
-    return  isEqual;
-}
-
-bool Cube::isSolved() {
-    // set isSolved to true
-    bool isSolved = true;
-
-    for (auto face : this->faces){
-        isSolved &= face.isSolved();
-    }
-
-    return isSolved;
 }
 
 void Cube::printCube(bool pretty, bool is256ColorSupported){

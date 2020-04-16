@@ -10,40 +10,6 @@ int Face::getCenter(){
     return this->state[1][1];
 }
 
-bool operator== (const Face &face1, const Face &face2){
-    // set isEqual to true
-    bool isEqual = true;
-
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j < 3; j++){
-            if (face1.state[i][j] != face2.state[i][j]){
-                isEqual = false;
-            }
-        }
-    }
-
-    return isEqual;
-}
-
-bool Face::isSolved(){
-    // set isSolved to true
-    bool isSolved = true;
-
-    // get the center of the face
-    int center = this->getCenter();
-
-    // check if all face tiles and center match
-    for (auto & row : this->state){
-        for (int tile : row){
-            if (tile != center){
-                isSolved = false;
-            }
-        }
-    }
-
-    return isSolved;
-}
-
 void Face::setAllTiles(int num){
     // iterate over face rows
     for(auto & i : this->state){

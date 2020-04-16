@@ -1,7 +1,9 @@
 add_library(
-        cube
+        cubesolver
         Face.hpp
         Cube.hpp
+        Solver.hpp
         Face.cpp
         Cube.cpp
+        Solver.cpp
 )

@@ -7,4 +7,4 @@ add_subdirectory(src)
 
 add_executable(rcube_solver main.cpp)
 
-target_link_libraries(rcube_solver cube)
+target_link_libraries(rcube_solver cubesolver)

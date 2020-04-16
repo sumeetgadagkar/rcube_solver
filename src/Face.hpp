@@ -12,7 +12,7 @@ public:
     virtual ~Face();
 
 public:
-    int state[3][3]; // State to store color grid information
+    int state[3][3]{}; // State to store color grid information
         // [0][0] - top left corner
         // [0][1] - top row middle
         // [0][2] - top row right corner
@@ -28,8 +28,6 @@ public:
     void setAllTiles(int num); // set all the tiles of the face to the value provided
     void rotateClockwise(); // rotate the face clockwise(top left corner -> top right corner)
     void rotateAntiClockwise(); // rotate the face counter clockwise (top right corner -> top left corner)
-    friend bool operator== (const Face &face1, const Face &face2); // equality operator to check if two cubes have the same state
-    bool isSolved(); // check if all the tiles in the face have the same color
 
 private:
     void swapStateElement(int a, int b, int c, int d); // swap element [a][b] with [c][d]
