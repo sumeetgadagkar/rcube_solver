@@ -45,11 +45,6 @@ Cube::Cube(std::vector<int>& cubeState): faces(6) {
     }
 }
 
-Cube::Cube(const Cube &cube) {
-    // copy constructor to enable cube state comparison
-    this->faces = cube.faces;
-}
-
 void Cube::printCube(bool pretty, bool is256ColorSupported){
 // the cube will be printed in the following format:
 //
@@ -519,7 +514,7 @@ void Cube::makeMove( const std::string &move){
         // Swap top face middle column and front face middle column
         this->swapRowCols(0, 1, 4, 4);
 
-        // Swap top face middle colum and down face middle column
+        // Swap top face middle column and down face middle column
         this->swapRowCols(0, 2, 4, 4);
 
         // Swap top face middle column and back face middle column with inversion
@@ -769,9 +764,12 @@ void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOr
         }
 
         // Perform swap
-        this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1] + this->faces[f2].state[rowIdx2][colIdx2];
-        this->faces[f2].state[rowIdx2][colIdx2] = this->faces[f1].state[rowIdx1][colIdx1] - this->faces[f2].state[rowIdx2][colIdx2];
-        this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1] - this->faces[f2].state[rowIdx2][colIdx2];
+        this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1]
+                + this->faces[f2].state[rowIdx2][colIdx2];
+        this->faces[f2].state[rowIdx2][colIdx2] = this->faces[f1].state[rowIdx1][colIdx1]
+                - this->faces[f2].state[rowIdx2][colIdx2];
+        this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1]
+                - this->faces[f2].state[rowIdx2][colIdx2];
     }
 }
 

@@ -1,6 +1,6 @@
 /*
- *  Definition of Solver class
- *  Author : zoroppz
+ * Definition of Solver class
+ * Author : zoroppz
  */
 
 #include "Solver.hpp"
@@ -147,8 +147,10 @@ void Solver::setWhiteEdges() {
 void Solver::setFLCorners() {
     // solve the first layer corners
     int cornersSet = 0;
-    std::set<int> expectedColors{this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(), this->cube.faces[4].getCenter()};
-    std::set<int> actualColors{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2], this->cube.faces[4].state[2][0]};
+    std::set<int> expectedColors{this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
+                                 this->cube.faces[4].getCenter()};
+    std::set<int> actualColors{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
+                                 this->cube.faces[4].state[2][0]};
     while (cornersSet < 4){
         // check if front face bottom right corner is set
         if (actualColors == expectedColors){
@@ -159,13 +161,16 @@ void Solver::setFLCorners() {
             // reset expectedColors and actualColors
             expectedColors.clear();
             actualColors.clear();
-            expectedColors.insert({this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(), this->cube.faces[4].getCenter()});
-            actualColors.insert({this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2], this->cube.faces[4].state[2][0]});
+            expectedColors.insert({this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
+                                   this->cube.faces[4].getCenter()});
+            actualColors.insert({this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
+                                   this->cube.faces[4].state[2][0]});
         }
         else{
             // corner is not set
             // find the correct corner
-            switch (this->getCornerPos(this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(), this->cube.faces[4].getCenter())){
+            switch (this->getCornerPos(this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
+                    this->cube.faces[4].getCenter())){
                 case 0:
                     // already set do nothing
                     break;
@@ -196,7 +201,8 @@ void Solver::setFLCorners() {
             }
             // reset actualColors
             actualColors.clear();
-            actualColors.insert({this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2], this->cube.faces[4].state[2][0]});
+            actualColors.insert({this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
+                                 this->cube.faces[4].state[2][0]});
         }
     }
 
@@ -204,7 +210,8 @@ void Solver::setFLCorners() {
     cornersSet = 0;
     while (cornersSet < 4){
         // check if the front face bottom right corner is correctly oriented
-        if ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[2][2]) && (this->cube.faces[2].getCenter() == this->cube.faces[2].state[0][2]) &&
+        if ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[2][2]) &&
+                (this->cube.faces[2].getCenter() == this->cube.faces[2].state[0][2]) &&
                 (this->cube.faces[4].getCenter() == this->cube.faces[4].state[2][0])){
             // corner is correctly oriented
             cornersSet++;
@@ -238,35 +245,43 @@ int Solver::getCornerPos(int col1, int col2, int col3){
     std::set<int> colorsToFind{col1, col2, col3};
 
     // check position 0
-    if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2], this->cube.faces[4].state[2][0]}){
+    if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
+                                      this->cube.faces[4].state[2][0]}){
         return 0;
     }
     // check position 1
-    else if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][0], this->cube.faces[2].state[0][0], this->cube.faces[5].state[2][2]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][0], this->cube.faces[2].state[0][0],
+                                           this->cube.faces[5].state[2][2]}){
         return 1;
     }
     // check position 2
-    else if (colorsToFind == std::set<int>{this->cube.faces[5].state[2][0], this->cube.faces[2].state[2][0], this->cube.faces[3].state[2][2]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[5].state[2][0], this->cube.faces[2].state[2][0],
+                                           this->cube.faces[3].state[2][2]}){
         return 2;
     }
     // check position 3
-    else if (colorsToFind == std::set<int>{this->cube.faces[3].state[2][0], this->cube.faces[2].state[2][2], this->cube.faces[4].state[2][2]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[3].state[2][0], this->cube.faces[2].state[2][2],
+                                           this->cube.faces[4].state[2][2]}){
         return 3;
     }
     // check position 4
-    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2], this->cube.faces[4].state[0][0]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
+                                           this->cube.faces[4].state[0][0]}){
         return 4;
     }
     // check position 5
-    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[0][0], this->cube.faces[5].state[0][2]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[0][0],
+                                           this->cube.faces[5].state[0][2]}){
         return 5;
     }
     // check position 6
-    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2], this->cube.faces[5].state[0][0]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2],
+                                           this->cube.faces[5].state[0][0]}){
         return 6;
     }
     // check position 7
-    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0], this->cube.faces[4].state[0][2]}){
+    else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0],
+                                           this->cube.faces[4].state[0][2]}){
         return 7;
     }else{
         printf("\nWrong arguments passed to getCornerPos\n");
