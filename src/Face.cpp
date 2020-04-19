@@ -6,21 +6,21 @@
 #include "Face.hpp"
 
 
-int Face::getCenter(){
+int Face::getCenter() {
     return this->state[1][1];
 }
 
-void Face::setAllTiles(int num){
+void Face::setAllTiles(int num) {
     // iterate over face rows
-    for(auto & i : this->state){
+    for (auto &i : this->state) {
         // iterate over columns
-        for(int & j : i){
+        for (int &j : i) {
             j = num;
         }
     }
 }
 
-void Face::rotateClockwise(){
+void Face::rotateClockwise() {
     // transpose the face state matrix and then swap the first and last column
     this->transposeState();
 
@@ -28,7 +28,7 @@ void Face::rotateClockwise(){
     this->swapColumn(0, 2);
 }
 
-void Face::rotateAntiClockwise(){
+void Face::rotateAntiClockwise() {
     // transpose the face state matrix and then swap the first and last row
     this->transposeState();
 
@@ -36,7 +36,7 @@ void Face::rotateAntiClockwise(){
     this->swapRow(0, 2);
 }
 
-void Face::swapStateElement(int a, int b, int c, int d){
+void Face::swapStateElement(int a, int b, int c, int d) {
     // swap state[a][b] and state[c][d]
 
     this->state[a][b] = this->state[a][b] + this->state[c][d];
@@ -44,7 +44,7 @@ void Face::swapStateElement(int a, int b, int c, int d){
     this->state[a][b] = this->state[a][b] - this->state[c][d];
 }
 
-void Face::transposeState(){
+void Face::transposeState() {
     // swap [0][1] and [1][0]
     this->swapStateElement(0, 1, 1, 0);
 
@@ -55,16 +55,16 @@ void Face::transposeState(){
     this->swapStateElement(1, 2, 2, 1);
 }
 
-void Face::swapRow(int a, int b){
+void Face::swapRow(int a, int b) {
     // [a][0:2] <-> [b][0:2]
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
         this->swapStateElement(a, i, b, i);
     }
 }
 
-void Face::swapColumn(int a, int b){
+void Face::swapColumn(int a, int b) {
     // [0:2][a] <-> [0:2][b]
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
         this->swapStateElement(i, a, i, b);
     }
 }

@@ -6,7 +6,7 @@
 #include "src/Cube.hpp"
 #include "src/Solver.hpp"
 
-int main(int argc, char** argv){
+int main(int argc, char **argv) {
     // instantiate cube object
     Cube myCube;
 
@@ -18,7 +18,7 @@ int main(int argc, char** argv){
 
     // print the randomizing moves
     printf("{");
-    for (const auto& move : movesMade){
+    for (const auto &move : movesMade) {
         printf("\"%s\", ", move.c_str());
     }
     printf("}");

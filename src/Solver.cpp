@@ -31,7 +31,7 @@ void Solver::getFaceToTop(int face) {
     // get the face <face> to the top
     int currentPos = this->findFacePos(face);
     std::vector<std::string> movesToPerform;
-    switch (currentPos){
+    switch (currentPos) {
         case 1:
             // face is present on front
             // perform move "X"
@@ -68,9 +68,9 @@ void Solver::getFaceToTop(int face) {
 
 int Solver::findFacePos(int face) {
     int pos = -1;
-    for (int i = 0; i < 6; i++){
-        if (face == this->cube.faces[i].state[1][1]){
-             pos = i;
+    for (int i = 0; i < 6; i++) {
+        if (face == this->cube.faces[i].state[1][1]) {
+            pos = i;
         }
     }
     return pos;
@@ -79,33 +79,33 @@ int Solver::findFacePos(int face) {
 void Solver::setWhiteEdges() {
     // check how many edges are already set
     int edgesSet = 0;
-    if (this->cube.faces[0].state[0][1] == 0 || this->cube.faces[3].state[0][1] == 0){
+    if (this->cube.faces[0].state[0][1] == 0 || this->cube.faces[3].state[0][1] == 0) {
         edgesSet++;
     }
-    if (this->cube.faces[0].state[1][2] == 0 || this->cube.faces[4].state[0][1] == 0){
+    if (this->cube.faces[0].state[1][2] == 0 || this->cube.faces[4].state[0][1] == 0) {
         edgesSet++;
     }
-    if (this->cube.faces[0].state[1][0] == 0 || this->cube.faces[5].state[0][1] == 0){
+    if (this->cube.faces[0].state[1][0] == 0 || this->cube.faces[5].state[0][1] == 0) {
         edgesSet++;
     }
 
     // set the white edges to the top face
     int faceMoved = 0;
-    while (edgesSet < 4){
-        while (faceMoved < 4){
-            if (this->cube.faces[0].state[2][1] == 0 || this->cube.faces[1].state[0][1] == 0){
+    while (edgesSet < 4) {
+        while (faceMoved < 4) {
+            if (this->cube.faces[0].state[2][1] == 0 || this->cube.faces[1].state[0][1] == 0) {
                 edgesSet++;
-                if (edgesSet >= 4){
+                if (edgesSet >= 4) {
                     // all edges are placed
                     break;
                 }
                 this->cube.makeMove("U");
                 // check if edge is already set
-                while (this->cube.faces[0].state[2][1] == 0 || this->cube.faces[1].state[0][1] == 0){
+                while (this->cube.faces[0].state[2][1] == 0 || this->cube.faces[1].state[0][1] == 0) {
                     // edge was already counted move to next
                     this->cube.makeMove("U");
                 }
-            }else{
+            } else {
                 // edge is not found move the front face
                 this->cube.makeMove("F");
                 faceMoved++;
@@ -118,8 +118,8 @@ void Solver::setWhiteEdges() {
     }
 
     // orient the required white edges
-    for (int i = 0; i < 4; i++){
-        if (this->cube.faces[0].state[2][1] != 0){
+    for (int i = 0; i < 4; i++) {
+        if (this->cube.faces[0].state[2][1] != 0) {
             // the white edge is twisted
             this->cube.makeMove({"F", "U'", "R", "U"});
         }
@@ -127,16 +127,16 @@ void Solver::setWhiteEdges() {
     }
 
     // number of white edges put on the white face
-    edgesSet  = 0;
+    edgesSet = 0;
 
-    while(edgesSet < 4){
-        if (this->cube.faces[1].state[0][1] == this->cube.faces[1].state[1][1]){
+    while (edgesSet < 4) {
+        if (this->cube.faces[1].state[0][1] == this->cube.faces[1].state[1][1]) {
             // center and edge match
             // move the edge to the bottom
             this->cube.makeMove("F2");
             edgesSet++;
             this->cube.makeMove("y");
-        }else{
+        } else {
             // edge and center do not match
             // move bottom 2 layers
             this->cube.makeMove("d");
@@ -150,10 +150,10 @@ void Solver::setFLCorners() {
     std::set<int> expectedColors{this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
                                  this->cube.faces[4].getCenter()};
     std::set<int> actualColors{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
-                                 this->cube.faces[4].state[2][0]};
-    while (cornersSet < 4){
+                               this->cube.faces[4].state[2][0]};
+    while (cornersSet < 4) {
         // check if front face bottom right corner is set
-        if (actualColors == expectedColors){
+        if (actualColors == expectedColors) {
             // corner is set
             cornersSet++;
             // bring in the bottom two layers from the right face
@@ -164,13 +164,12 @@ void Solver::setFLCorners() {
             expectedColors.insert({this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
                                    this->cube.faces[4].getCenter()});
             actualColors.insert({this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
-                                   this->cube.faces[4].state[2][0]});
-        }
-        else{
+                                 this->cube.faces[4].state[2][0]});
+        } else {
             // corner is not set
             // find the correct corner
             switch (this->getCornerPos(this->cube.faces[1].getCenter(), this->cube.faces[2].getCenter(),
-                    this->cube.faces[4].getCenter())){
+                                       this->cube.faces[4].getCenter())) {
                 case 0:
                     // already set do nothing
                     break;
@@ -208,16 +207,16 @@ void Solver::setFLCorners() {
 
     // orient the first layer corners
     cornersSet = 0;
-    while (cornersSet < 4){
+    while (cornersSet < 4) {
         // check if the front face bottom right corner is correctly oriented
         if ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[2][2]) &&
-                (this->cube.faces[2].getCenter() == this->cube.faces[2].state[0][2]) &&
-                (this->cube.faces[4].getCenter() == this->cube.faces[4].state[2][0])){
+            (this->cube.faces[2].getCenter() == this->cube.faces[2].state[0][2]) &&
+            (this->cube.faces[4].getCenter() == this->cube.faces[4].state[2][0])) {
             // corner is correctly oriented
             cornersSet++;
             // bring in bottom two layers from the right face
             this->cube.makeMove("d'");
-        }else{
+        } else {
             // corner is not oriented correctly
             // change the corner orientation
             this->cube.makeMove({"R", "U", "R'", "U'"});
@@ -225,7 +224,7 @@ void Solver::setFLCorners() {
     }
 }
 
-int Solver::getCornerPos(int col1, int col2, int col3){
+int Solver::getCornerPos(int col1, int col2, int col3) {
     // get the position of the corner represented by the colors : col1, col2, col3
 
     // the position convention used is as described below
@@ -246,44 +245,44 @@ int Solver::getCornerPos(int col1, int col2, int col3){
 
     // check position 0
     if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][2], this->cube.faces[2].state[0][2],
-                                      this->cube.faces[4].state[2][0]}){
+                                      this->cube.faces[4].state[2][0]}) {
         return 0;
     }
-    // check position 1
+        // check position 1
     else if (colorsToFind == std::set<int>{this->cube.faces[1].state[2][0], this->cube.faces[2].state[0][0],
-                                           this->cube.faces[5].state[2][2]}){
+                                           this->cube.faces[5].state[2][2]}) {
         return 1;
     }
-    // check position 2
+        // check position 2
     else if (colorsToFind == std::set<int>{this->cube.faces[5].state[2][0], this->cube.faces[2].state[2][0],
-                                           this->cube.faces[3].state[2][2]}){
+                                           this->cube.faces[3].state[2][2]}) {
         return 2;
     }
-    // check position 3
+        // check position 3
     else if (colorsToFind == std::set<int>{this->cube.faces[3].state[2][0], this->cube.faces[2].state[2][2],
-                                           this->cube.faces[4].state[2][2]}){
+                                           this->cube.faces[4].state[2][2]}) {
         return 3;
     }
-    // check position 4
+        // check position 4
     else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
-                                           this->cube.faces[4].state[0][0]}){
+                                           this->cube.faces[4].state[0][0]}) {
         return 4;
     }
-    // check position 5
+        // check position 5
     else if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[0][0],
-                                           this->cube.faces[5].state[0][2]}){
+                                           this->cube.faces[5].state[0][2]}) {
         return 5;
     }
-    // check position 6
+        // check position 6
     else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2],
-                                           this->cube.faces[5].state[0][0]}){
+                                           this->cube.faces[5].state[0][0]}) {
         return 6;
     }
-    // check position 7
+        // check position 7
     else if (colorsToFind == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0],
-                                           this->cube.faces[4].state[0][2]}){
+                                           this->cube.faces[4].state[0][2]}) {
         return 7;
-    }else{
+    } else {
         printf("\nWrong arguments passed to getCornerPos\n");
         return -1;
     }

@@ -6,25 +6,25 @@
 #ifndef RCUBE_SOLVER_FACE_HPP
 #define RCUBE_SOLVER_FACE_HPP
 
-class Face{
+class Face {
 
 public:
     virtual ~Face();
 
 public:
     int state[3][3]{}; // State to store color grid information
-        // [0][0] - top left corner
-        // [0][1] - top row middle
-        // [0][2] - top row right corner
-        // [1][0] - middle row left
-        // ...
+    // [0][0] - top left corner
+    // [0][1] - top row middle
+    // [0][2] - top row right corner
+    // [1][0] - middle row left
+    // ...
     int getCenter(); // return color of the center tile of the face
-        // 0 - white
-        // 1 - blue
-        // 2 - yellow
-        // 3 - green
-        // 4 - orange
-        // 5 - red
+    // 0 - white
+    // 1 - blue
+    // 2 - yellow
+    // 3 - green
+    // 4 - orange
+    // 5 - red
     void setAllTiles(int num); // set all the tiles of the face to the value provided
     void rotateClockwise(); // rotate the face clockwise(top left corner -> top right corner)
     void rotateAntiClockwise(); // rotate the face counter clockwise (top right corner -> top left corner)

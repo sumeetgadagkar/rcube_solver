@@ -5,14 +5,14 @@
 
 #include "Cube.hpp"
 
-Cube::Cube(): faces(6){
+Cube::Cube() : faces(6) {
     // initialize the cube's faces
-    for(int i = 0; i < 6; i++){
+    for (int i = 0; i < 6; i++) {
         this->faces[i].setAllTiles(i);
     }
 }
 
-Cube::Cube(std::vector<int>& cubeState): faces(6) {
+Cube::Cube(std::vector<int> &cubeState) : faces(6) {
     // constructor which accepts initial state of the cube
 
     // the cube structure is defined as such
@@ -36,16 +36,16 @@ Cube::Cube(std::vector<int>& cubeState): faces(6) {
     // the fifth 9 elements denote the right face in the order shown in the diagram
     // the sixth 9 elements denote the left face in the order shown in the diagram
 
-    for (int i = 0; i < 6; i++){
-        for (int j = 0; j < 3; j++){
-            for (int k = 0; k < 3; k++){
-                this->faces[i].state[j][k] = cubeState[i*9 + j*3 + k];
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                this->faces[i].state[j][k] = cubeState[i * 9 + j * 3 + k];
             }
         }
     }
 }
 
-void Cube::printCube(bool pretty, bool is256ColorSupported){
+void Cube::printCube(bool pretty, bool is256ColorSupported) {
 // the cube will be printed in the following format:
 //
 //          9 8 7
@@ -67,14 +67,13 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
     // print the R face
 
     // print the R face elements
-    for (int i = 2; i >= 0; i--){
+    for (int i = 2; i >= 0; i--) {
         printf("           ");
-        for (int j = 2; j >= 0; j--){
-            if(!pretty){
+        for (int j = 2; j >= 0; j--) {
+            if (!pretty) {
                 // Non pretty printing
                 printf("%d ", this->faces[4].state[i][j]);
-            }
-            else{
+            } else {
                 // Pretty printing
                 Cube::prettyPrint(this->faces[4].state[i][j], is256ColorSupported);
             }
@@ -107,28 +106,27 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
     int idx = 0;
 
     // print the matrix
-    for (int i = 0; i < 3; i++){ // NOLINT(modernize-loop-convert)
-        for (int j = -1; j < 3; j++){
-            for (int k = 0; k < 3; k ++){
+    for (int i = 0; i < 3; i++) { // NOLINT(modernize-loop-convert)
+        for (int j = -1; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
 
                 // set correct face indexing
-                if(j < 0){
+                if (j < 0) {
                     idx = 3;
-                }else{
+                } else {
                     idx = j;
                 }
 
-                if(!pretty){
+                if (!pretty) {
                     // non pretty printing
                     printf("%d ", this->faces[idx].state[i][k]);
-                }
-                else{
+                } else {
                     // pretty printing
                     Cube::prettyPrint(this->faces[idx].state[i][k], is256ColorSupported);
                 }
                 printf(" ");
             }
-            if (j < 2){
+            if (j < 2) {
                 printf("| ");
             }
         }
@@ -157,14 +155,13 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
     printf("          ");
     printf("----------\n");
 
-    for (auto & i : this->faces[5].state){
+    for (auto &i : this->faces[5].state) {
         printf("           ");
-        for (int j : i){
-            if(!pretty){
+        for (int j : i) {
+            if (!pretty) {
                 // non pretty printing
                 printf("%d ", j);
-            }
-            else{
+            } else {
                 // pretty printing
                 Cube::prettyPrint(j, is256ColorSupported);
             }
@@ -177,15 +174,14 @@ void Cube::printCube(bool pretty, bool is256ColorSupported){
 
 }
 
-void Cube::prettyPrint(int num, bool is256ColorSupported){
+void Cube::prettyPrint(int num, bool is256ColorSupported) {
     // pretty print colors instead of numbers
 
     std::string colorSpec;
 
-    if (!is256ColorSupported){
+    if (!is256ColorSupported) {
         // xTerm 256 colors not supported
-        switch (num)
-        {
+        switch (num) {
             case 0:
                 // White
                 colorSpec = "47m";
@@ -216,11 +212,9 @@ void Cube::prettyPrint(int num, bool is256ColorSupported){
                 colorSpec = "41m";
                 break;
         }
-    }
-    else{
+    } else {
         // xTerm 256 colors supported
-        switch (num)
-        {
+        switch (num) {
             case 0:
                 // White
                 colorSpec = "48;5;15m";
@@ -255,7 +249,7 @@ void Cube::prettyPrint(int num, bool is256ColorSupported){
     printf("\033[4;30;%s  \033[0m", colorSpec.c_str());
 }
 
-void Cube::randomizeCube(std::vector<std::string>& movesMade){
+void Cube::randomizeCube(std::vector<std::string> &movesMade) {
     // container for moves to make
     std::vector<std::string> movesToMake;
 
@@ -264,7 +258,7 @@ void Cube::randomizeCube(std::vector<std::string>& movesMade){
     std::default_random_engine rng(seed);
 
     // randomly pick 20 moves moves from valid moves
-    for (int i = 0; i < 20; i++){
+    for (int i = 0; i < 20; i++) {
         auto idx = rng() % validMoves.size();
         movesToMake.push_back(validMoves[idx]);
         movesMade.push_back(validMoves[idx]);
@@ -274,7 +268,7 @@ void Cube::randomizeCube(std::vector<std::string>& movesMade){
     this->makeMove(movesToMake);
 }
 
-void Cube::randomizeCube(){
+void Cube::randomizeCube() {
     // container for moves to make
     std::vector<std::string> movesToMake;
 
@@ -283,7 +277,7 @@ void Cube::randomizeCube(){
     std::default_random_engine rng(seed);
 
     // randomly pick 20 moves moves from valid moves
-    for (int i = 0; i < 20; i++){
+    for (int i = 0; i < 20; i++) {
         auto idx = rng() % validMoves.size();
         movesToMake.push_back(validMoves[idx]);
     }
@@ -292,8 +286,8 @@ void Cube::randomizeCube(){
     this->makeMove(movesToMake);
 }
 
-void Cube::makeMove( const std::string &move){
-    if ("U" == move){
+void Cube::makeMove(const std::string &move) {
+    if ("U" == move) {
         // Perform the move U
 
         // Top face clockwise 90deg
@@ -307,8 +301,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap first row of front face with the top row of right face
         this->swapRowCols(1, 4, 0, 0);
-    }
-    else if ("R" == move){
+    } else if ("R" == move) {
         // Perform the move R
 
         // Right face clockwise 90deg
@@ -322,8 +315,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the last column of the top face with the last column of the front face
         this->swapRowCols(0, 1, 5, 5);
-    }
-    else if ("F" == move){
+    } else if ("F" == move) {
         // Perform the move F
 
         // Front face clockwise 90deg
@@ -337,8 +329,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the last row of the top face with the last column of the left face with inversion
         this->swapRowCols(0, 5, 2, 5, true);
-    }
-    else if ("D" == move){
+    } else if ("D" == move) {
         // Perform the move D
 
         // Down face clockwise 90deg
@@ -352,8 +343,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap front face last row with left face last row
         this->swapRowCols(1, 5, 2, 2);
-    }
-    else if ("L" == move){
+    } else if ("L" == move) {
         // Perform the move L
 
         // Left face clockwise 90deg
@@ -367,8 +357,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the top face first column with back face last column with inversion
         this->swapRowCols(0, 3, 3, 5, true);
-    }
-    else if("B" == move){
+    } else if ("B" == move) {
         // Perform the B move
 
         // Back face clockwise 90deg
@@ -382,8 +371,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap top face first row with right face last column with inversion
         this->swapRowCols(0, 4, 0, 5);
-    }
-    else if ("U'" == move){
+    } else if ("U'" == move) {
         // Perform the U' move
 
         // Top face anticlockwise 90deg
@@ -397,8 +385,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the front face first row with the left face first row
         this->swapRowCols(1, 5, 0, 0);
-    }
-    else if("R'" == move){
+    } else if ("R'" == move) {
         // Perform the R' move
 
         // Right face anticlockwise 90deg
@@ -412,8 +399,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the last column of the top face with the first column of the back face
         this->swapRowCols(0, 3, 5, 3, true);
-    }
-    else if ("F'" == move){
+    } else if ("F'" == move) {
         // Perform the F' move
 
         // Front face anticlockwise 90deg
@@ -427,8 +413,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap top face last row with right face first column with inversion
         this->swapRowCols(0, 4, 2, 3);
-    }
-    else if ("D'" == move){
+    } else if ("D'" == move) {
         // Perform the D' move
 
         // Down face anticlockwise 90deg
@@ -442,8 +427,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap front face last row and right face last row
         this->swapRowCols(1, 4, 2, 2);
-    }
-    else if ("L'" == move){
+    } else if ("L'" == move) {
         // Perform the L' move
 
         // Swap left face anticlockwise 90deg
@@ -457,8 +441,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap top face first column and front face first column
         this->swapRowCols(0, 1, 3, 3);
-    }
-    else if ("B'" == move){
+    } else if ("B'" == move) {
         // Perform the B' move
 
         // Back face anticlockwise 90 deg
@@ -472,43 +455,37 @@ void Cube::makeMove( const std::string &move){
 
         // Swap top face first row and left face first column with inversion
         this->swapRowCols(0, 5, 0, 3, true);
-    }else if("U2" == move){
+    } else if ("U2" == move) {
         // Perform move U2
 
         // Perform move U twice
         this->makeMove({"U", "U"});
-    }
-    else if("R2" == move){
+    } else if ("R2" == move) {
         // Perform move R2
 
         // Perform move R twice
         this->makeMove({"R", "R"});
-    }
-    else if("F2" == move){
+    } else if ("F2" == move) {
         // Perform move F2
 
         // Perform move F twice
         this->makeMove({"F", "F"});
-    }
-    else if("D2" == move){
+    } else if ("D2" == move) {
         // Perform move D2
 
         // Perform move D twice
         this->makeMove({"D", "D"});
-    }
-    else if("L2" == move){
+    } else if ("L2" == move) {
         // Perform move L2
 
         // Perform move L twice
         this->makeMove({"L", "L"});
-    }
-    else if("B2" == move){
+    } else if ("B2" == move) {
         // Perform move B2
 
         // Perform move B twice
         this->makeMove({"B", "B"});
-    }
-    else if ("M" == move){
+    } else if ("M" == move) {
         // Perform the M move
 
         // Swap top face middle column and front face middle column
@@ -519,8 +496,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap top face middle column and back face middle column with inversion
         this->swapRowCols(0, 3, 4, 4, true);
-    }
-    else if ("M'" == move){
+    } else if ("M'" == move) {
         // Perform the M' move
 
         // Swap bottom face middle column and front face middle column
@@ -531,8 +507,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap bottom face middle column and back face middle column with inversion
         this->swapRowCols(2, 3, 4, 4, true);
-    }
-    else if ("E" == move){
+    } else if ("E" == move) {
         // Perform the move E
 
         // Swap the front face middle row and the right face middle row
@@ -543,8 +518,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the front face middle row and the left face middle row
         this->swapRowCols(1, 5, 1, 1);
-    }
-    else if ("E'" == move){
+    } else if ("E'" == move) {
         // Perform the E' move
 
         // Swap the front face middle row to the left face middle row
@@ -555,8 +529,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the front face middle row to the right face middle row
         this->swapRowCols(1, 4, 1, 1);
-    }
-    else if ("S" == move){
+    } else if ("S" == move) {
         // Perform the move S
 
         // Swap top face middle row and right face middle column
@@ -567,8 +540,7 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the top face middle row and left face middle column with inversion
         this->swapRowCols(0, 5, 1, 4, true);
-    }
-    else if ("S'" == move){
+    } else if ("S'" == move) {
         // Perform the move S'
 
         // Swap the top face middle row and left face middle column with inversion
@@ -579,116 +551,97 @@ void Cube::makeMove( const std::string &move){
 
         // Swap the top face middle row and right face middle column with inversion
         this->swapRowCols(0, 4, 1, 4);
-    }
-    else if ("u" == move){
+    } else if ("u" == move) {
         // Perform move u
 
         // Perform move U and E'
         this->makeMove({"U", "E'"});
-    }
-    else if ("u'" == move){
+    } else if ("u'" == move) {
         // Perform move u'
 
         // Perform move U' and E
         this->makeMove({"U'", "E"});
-    }
-    else if ("r" == move){
+    } else if ("r" == move) {
         // Perform move r
 
         // Perform move R and M'
         this->makeMove({"R", "M'"});
-    }
-    else if ("r'" == move){
+    } else if ("r'" == move) {
         // Perform move r'
 
         // Perform move R' and M
         this->makeMove({"R'", "M"});
-    }
-    else if ("f" == move){
+    } else if ("f" == move) {
         // Perform move f
 
         // Perform move F and S
         this->makeMove({"F", "S"});
-    }
-    else if ("f'" == move){
+    } else if ("f'" == move) {
         // Perform move f'
 
         // Perform move F' and S'
         this->makeMove({"F'", "S'"});
-    }
-    else if ("d" == move){
+    } else if ("d" == move) {
         // Perform move d
 
         // Perform move D and E
         this->makeMove({"D", "E"});
-    }
-    else if ("d'" == move){
+    } else if ("d'" == move) {
         // Perform move d'
 
         // Perform move D' and E'
         this->makeMove({"D'", "E'"});
-    }
-    else if ("l" == move){
+    } else if ("l" == move) {
         // Perform move l
 
         // Perform move L and M
         this->makeMove({"L", "M"});
-    }
-    else if ("l'" == move){
+    } else if ("l'" == move) {
         // Perform move l'
 
         // Perform move L' and M'
         this->makeMove({"L'", "M'"});
-    }
-    else if ("b" == move){
+    } else if ("b" == move) {
         // Perform move b
 
         // Perform move B and S'
         this->makeMove({"B", "S'"});
-    }
-    else if ("b'" == move){
+    } else if ("b'" == move) {
         // Perform move b'
 
         // Perform move B' and S
         this->makeMove({"B'", "S"});
-    }
-    else if ("x" == move){
+    } else if ("x" == move) {
         // Perform move x
 
         // Perform the moves R, L' and M'
         this->makeMove({"R", "L'", "M'"});
-    }
-    else if ("x'" == move){
+    } else if ("x'" == move) {
         // Perform move x'
 
         // Perform the moves R', L and M
         this->makeMove({"R'", "L", "M"});
-    }
-    else if ("y" == move){
+    } else if ("y" == move) {
         // Perform the move y
 
         // Perform the moves U, D' and E'
         this->makeMove({"U", "D'", "E'"});
-    }
-    else if ("y'" == move){
+    } else if ("y'" == move) {
         // Perform the move y'
 
         // Perform the moves U', D and E
         this->makeMove({"U'", "D", "E"});
-    }
-    else if ("z" == move){
+    } else if ("z" == move) {
         // Perform the move z
 
         // Perform the moves F, S and B'
         this->makeMove({"F", "S", "B'"});
-    }
-    else if ("z'" == move){
+    } else if ("z'" == move) {
         // Perform the move z'
 
         // Perform the moves F', S' and B
         this->makeMove({"F'", "S'", "B"});
-    }
-    else{
+    } else {
         printf("\nInvalid Move requested!\n");
     }
 
@@ -696,19 +649,19 @@ void Cube::makeMove( const std::string &move){
 
 void Cube::makeMove(const std::initializer_list<std::string> &moves) {
     // perform a set of moves on the cube e.g. <cube_obj>.makeMove({"U", "R",...})
-    for (const auto &move : moves){
+    for (const auto &move : moves) {
         this->makeMove(move);
     }
 }
 
 void Cube::makeMove(const std::vector<std::string> &moves) {
     // perform a set of moves on the cube e.g. <cube_obj>.makeMove(<string vector of moves>)
-    for (const auto &move : moves){
+    for (const auto &move : moves) {
         this->makeMove(move);
     }
 }
 
-void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOrder){
+void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOrder) {
     // Generic function to swap rows and columns of the cube faces
 
     // f1 : face 1
@@ -731,33 +684,30 @@ void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOr
 
     int rowIdx1, colIdx1, rowIdx2, colIdx2, idx;
 
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
 
         // Check if order needs to be inverted
-        if (invertOrder){
+        if (invertOrder) {
             idx = 2 - i;
-        }
-        else{
+        } else {
             idx = i;
         }
 
-        if (rowCol_1 < 3){
+        if (rowCol_1 < 3) {
             // Row needs to be swapped
             rowIdx1 = rowCol_1;
             colIdx1 = idx;
-        }
-        else{
+        } else {
             // Column needs to be swapped
             rowIdx1 = idx;
             colIdx1 = rowCol_1 - 3;
         }
 
-        if (rowCol_2 < 3){
+        if (rowCol_2 < 3) {
             // Row needs to be swapped
             rowIdx2 = rowCol_2;
             colIdx2 = i;
-        }
-        else{
+        } else {
             // Column needs to be swapped
             rowIdx2 = i;
             colIdx2 = rowCol_2 - 3;
@@ -765,11 +715,11 @@ void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOr
 
         // Perform swap
         this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1]
-                + this->faces[f2].state[rowIdx2][colIdx2];
+                                                  + this->faces[f2].state[rowIdx2][colIdx2];
         this->faces[f2].state[rowIdx2][colIdx2] = this->faces[f1].state[rowIdx1][colIdx1]
-                - this->faces[f2].state[rowIdx2][colIdx2];
+                                                  - this->faces[f2].state[rowIdx2][colIdx2];
         this->faces[f1].state[rowIdx1][colIdx1] = this->faces[f1].state[rowIdx1][colIdx1]
-                - this->faces[f2].state[rowIdx2][colIdx2];
+                                                  - this->faces[f2].state[rowIdx2][colIdx2];
     }
 }
 
