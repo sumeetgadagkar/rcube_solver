@@ -4,22 +4,36 @@
  */
 
 #include "src/Cube.hpp"
+#include "src/Solver.hpp"
 
 int main(int argc, char** argv){
-
-    // create initial cube state vector
-    std::vector<int> cubeState {0, 0, 0, 4, 0, 3, 0, 2, 2,
-                                1, 5, 4, 1, 1, 4, 2, 3, 2,
-                                5, 0, 5, 0, 2, 3, 2, 2, 0,
-                                3, 5, 3, 1, 3, 1, 1, 3, 4,
-                                1, 5, 4, 1, 4, 2, 3, 4, 4,
-                                5, 2, 5, 0, 5, 5, 3, 4, 1};
-
     // instantiate cube object
-    Cube myCube(cubeState);
+    Cube myCube;
 
-    // print cube
+    // container to store randomizing moves
+    std::vector<std::string> movesMade;
+
+    // randomize the cube
+    myCube.randomizeCube(movesMade);
+
+    // print the randomizing moves
+    printf("{");
+    for (const auto& move : movesMade){
+        printf("\"%s\", ", move.c_str());
+    }
+    printf("}");
+
+    // print the cube
     myCube.printCube(true, true);
+
+    // instantiate the solver
+    Solver mySolver(myCube);
+
+    // solve the cube
+    mySolver.solveCube();
+
+    // print the cube
+    mySolver.cube.printCube(true, true);
 
     return 0;
 }
