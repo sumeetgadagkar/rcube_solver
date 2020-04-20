@@ -10,6 +10,8 @@ int main(int argc, char **argv) {
     // instantiate cube object
     Cube myCube;
 
+    //myCube.makeMove({"l", "L2", "d'", "f'", "M", "r'", "r", "M'", "y", "l'", "M'", "y'", "F2", "E'", "y'", "b", "f'", "F'", "u'", "d'"});
+
     // container to store randomizing moves
     std::vector<std::string> movesMade;
 

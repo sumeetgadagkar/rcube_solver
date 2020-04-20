@@ -24,6 +24,9 @@ std::vector<std::string> Solver::solveCube() {
     // step 2 : solve the first layer (corners)
     this->setFLCorners();
 
+    // step 3 : solve the second layer edges
+    this->setSLEdges();
+
     return std::vector<std::string>();
 }
 
@@ -285,5 +288,75 @@ int Solver::getCornerPos(int col1, int col2, int col3) {
     } else {
         printf("\nWrong arguments passed to getCornerPos\n");
         return -1;
+    }
+}
+
+void Solver::setSLEdges() {
+    // solve the second layer edges
+    int edgesSet = 0;
+    int faceMoved = 0;
+
+    // check how many edges are already set
+    if ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[1][2]) &&
+        (this->cube.faces[4].getCenter() == this->cube.faces[4].state[1][0])) {
+        edgesSet++;
+    }
+
+    if ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[1][0]) &&
+        (this->cube.faces[5].getCenter() == this->cube.faces[5].state[1][2])) {
+        edgesSet++;
+    }
+
+    if ((this->cube.faces[4].getCenter() == this->cube.faces[4].state[1][2]) &&
+        (this->cube.faces[3].getCenter() == this->cube.faces[3].state[1][0])) {
+        edgesSet++;
+    }
+
+    if ((this->cube.faces[5].getCenter() == this->cube.faces[5].state[1][0]) &&
+        (this->cube.faces[3].getCenter() == this->cube.faces[3].state[1][2])) {
+        edgesSet++;
+    }
+
+    while (edgesSet < 4) {
+        while (faceMoved < 4) {
+            // check if front face top layer edge is valid
+            if ((this->cube.faces[1].state[0][1] != 2) && (this->cube.faces[0].state[2][1] != 2)) {
+                // valid edge present
+                // find its corresponding face and set the edge, set faceMoved to 0 and increment edgesSet
+                while (this->cube.faces[1].state[0][1] != this->cube.faces[1].getCenter()) {
+                    // shift through the bottom two layers
+                    this->cube.makeMove("d'");
+                }
+
+                // check which side to put the edge
+                if (this->cube.faces[0].state[2][1] == this->cube.faces[5].getCenter()){
+                    // move the edge to the left position
+                    this->cube.makeMove({"U'", "L'", "U'", "L", "U", "y'", "R", "U", "R'", "U'", "y"});
+                } else {
+                    // move the edge to the right position
+                    this->cube.makeMove({"U", "R", "U", "R'", "U'", "y", "L'", "U'", "L", "U", "y'"});
+                }
+                edgesSet++;
+                if (edgesSet >= 4){
+                    break;
+                }
+                faceMoved = 0;
+            } else {
+                this->cube.makeMove("U");
+                faceMoved++;
+            }
+        }
+        if (edgesSet < 4) {
+            faceMoved = 0;
+            // no valid edge on the top layer
+            // find an unset edge in the middle layer and push it to top layer
+            while ((this->cube.faces[1].getCenter() == this->cube.faces[1].state[1][2]) &&
+                     (this->cube.faces[4].getCenter() == this->cube.faces[4].state[1][0])) {
+                // cycle through the bottom two layers to find an unset front face right edge
+                this->cube.makeMove("d");
+            }
+            // push the front face right edge to the top layer
+            this->cube.makeMove({"U", "R", "U", "R'", "U'", "y", "L'", "U'", "L", "U", "y'"});
+        }
     }
 }
