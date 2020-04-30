@@ -25,6 +25,10 @@ private:
     int getCornerPos(int col1, int col2, int col3); // find the corner with colors : col1, col2, col3 and return the
     // position
     void setSLEdges();
+    void setLLCorners();
+    int getLLPattern();
+    int getCornersSet();
+    int getSetCornerPosition();
 };
 
 
