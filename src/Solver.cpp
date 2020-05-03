@@ -30,6 +30,9 @@ std::vector<std::string> Solver::solveCube() {
     // step 4 : set last layer corners
     this->setLLCorners();
 
+    // step 5 : set last layer edges
+    this->setLLEdges();
+
     return std::vector<std::string>();
 }
 
@@ -402,7 +405,7 @@ void Solver::setLLCorners() {
         }
         else if (this->getCornersSet() == 2) {
             // check if diagonal or straight
-            cornersSet == 2;
+            cornersSet = 2;
             break;
         }
         else {
@@ -415,9 +418,117 @@ void Solver::setLLCorners() {
     if (cornersSet == 2){
         // set all the corners
         switch (this->getSetCornerPosition()) {
+            case 1:
+                // position 1
+                this->cube.makeMove({"y'", "y'"});
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            case 2:
+                // position 2
+                this->cube.makeMove({"y"});
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            case 3:
+                // position 3
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            case 4:
+                // position 4
+                this->cube.makeMove({"y'"});
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            case 5:
+                // position 5
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L", "U"});
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            case 6:
+                // position 6
+                this->cube.makeMove("y");
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L", "U"});
+                for (int i = 0; i < 3; i ++){
+                    this->cube.makeMove({"R", "U", "R'", "U'"});
+                }
+                this->cube.makeMove("y");
+                for (int i = 0; i < 2; i ++){
+                    this->cube.makeMove({"L'", "U'", "L", "U"});
+                }
+                this->cube.makeMove({"L'", "U'", "L"});
+                break;
+            default:
+                break;
 
         }
     }
+
+    // all corners are set in the correct position
+    // orient all the corners
+
+    cornersSet = 0;
+    this->cube.makeMove({"x", "x"});
+
+    while (cornersSet < 4) {
+        if (this->cube.faces[2].state[0][2] == this->cube.faces[2].getCenter()) {
+            // corner is oriented correctly
+            cornersSet++;
+            this->cube.makeMove("D'");
+        }
+        else {
+            // orient the corner
+            this->cube.makeMove({"R", "U", "R'", "U'"});
+        }
+    }
+
+    this->cube.makeMove({"x", "x"});
 }
 
 int Solver::getLLPattern() {
@@ -467,7 +578,7 @@ int Solver::getCornersSet() {
         std::set<int>colorsToFind{this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(),
                                   this->cube.faces[4].getCenter()};
         if (colorsToFind == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
-                                          this->cube.faces[0].state[0][0]}) {
+                                          this->cube.faces[4].state[0][0]}) {
             // corner is set
             cornersSet++;
         }
@@ -510,28 +621,156 @@ int Solver::getSetCornerPosition() {
     //        6 X X
 
     // check for position 1
-    std::set<int>colorsToFind_1{this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(),
+    std::set<int>colorsToFind_1{this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(),
                                 this->cube.faces[4].getCenter()};
-    std::set<int>colorsToFind_2{this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(),
+    std::set<int>colorsToFind_2{this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(),
                                 this->cube.faces[4].getCenter()};
 
-    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[1][2],
-                                        this->cube.faces[4].state[0][0]} &&
-        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0],
-                                        this->cube.faces[4].state[0][2]}) {
+    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0],
+                                        this->cube.faces[4].state[0][2]} &&
+        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
+                                        this->cube.faces[4].state[0][0]}) {
         return 1;
     }
-
-
 
     // check for position 2
     colorsToFind_1 = {this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(), this->cube.faces[4].getCenter()};
-    colorsToFind_2 = {this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(), this->cube.faces[4].getCenter()};
+    colorsToFind_2 = {this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(), this->cube.faces[5].getCenter()};
 
-    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[0].state[2][0],
-                                        this->cube.faces[0].state[2][0]} &&
-        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[0].state[2][0],
-                                        this->cube.faces[0].state[2][0]}) {
-        return 1;
+    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
+                                        this->cube.faces[4].state[0][0]} &&
+        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[0][0],
+                                        this->cube.faces[5].state[0][2]}) {
+        return 2;
+    }
+
+    // check for position 3
+    colorsToFind_1 = {this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(), this->cube.faces[5].getCenter()};
+    colorsToFind_2 = {this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(), this->cube.faces[5].getCenter()};
+
+    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[2][0], this->cube.faces[1].state[0][0],
+                                        this->cube.faces[5].state[0][2]} &&
+        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2],
+                                        this->cube.faces[5].state[0][0]}) {
+        return 3;
+    }
+
+    // check for position 4
+    colorsToFind_1 = {this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(), this->cube.faces[5].getCenter()};
+    colorsToFind_2 = {this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(), this->cube.faces[4].getCenter()};
+
+    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2],
+                                        this->cube.faces[5].state[0][0]} &&
+        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[0][2], this->cube.faces[3].state[0][0],
+                                        this->cube.faces[4].state[0][2]}) {
+        return 4;
+    }
+
+    // check for position 5
+    colorsToFind_1 = {this->cube.faces[0].getCenter(), this->cube.faces[1].getCenter(), this->cube.faces[4].getCenter()};
+    colorsToFind_2 = {this->cube.faces[0].getCenter(), this->cube.faces[3].getCenter(), this->cube.faces[5].getCenter()};
+
+    if (colorsToFind_1 == std::set<int>{this->cube.faces[0].state[2][2], this->cube.faces[1].state[0][2],
+                                        this->cube.faces[4].state[0][0]} &&
+        colorsToFind_2 == std::set<int>{this->cube.faces[0].state[0][0], this->cube.faces[3].state[0][2],
+                                        this->cube.faces[5].state[0][0]}) {
+        return 5;
+    }
+
+    // position 6
+    return 6;
+}
+
+void Solver::setLLEdges() {
+    // set the last layer edges
+
+    // get the state of the last layer edges
+    int faceState = this->getLLEdgeState();
+
+    switch (faceState) {
+        case 1:
+            // all edges are solved
+            break;
+        case 2:
+            // no edges are set
+            // solve any edge
+            this->cube.makeMove(
+                    {"L'", "U'", "L", "U", "R", "U", "R'", "U'", "U'", "L'", "U", "L", "U", "R", "U'", "R'"});
+            this->setLLEdges();
+            break;
+        case 3:
+            // only front edge is solved
+            // do nothing
+            break;
+        case 4:
+            // only left edge is solved
+            this->cube.makeMove("y'");
+            break;
+        case 5:
+            // only back edge is solved
+            this->cube.makeMove({"y", "y"});
+            break;
+        case 6:
+            // only the right edge is solved
+            this->cube.makeMove("y");
+            break;
+        default:
+            break;
+    }
+
+    if (this->getLLEdgeState() != 1)
+    {
+        // check which direction to rotate the unsolved edges
+        if (this->cube.faces[4].state[0][1] == this->cube.faces[5].getCenter()) {
+            // clockwise
+            this->cube.makeMove(
+                    {"L'", "U'", "L", "U", "R", "U", "R'", "U'", "U'", "L'", "U", "L", "U", "R", "U'", "R'"});
+        } else {
+            // anti-clockwise
+            this->cube.makeMove(
+                    {"R", "U", "R'", "U'", "L'", "U'", "L", "U", "U", "R", "U'", "R'", "U'", "L'", "U", "L"});
+        }
     }
 }
+
+int Solver::getLLEdgeState() {
+    // if all edges solved return 1
+    // if no edges are solved return 2
+    // if front face edge solved return 3
+    // if left face edge solved return 4
+    // if back face edge solved return 5
+    // if right face edge solved return 6
+
+    if ((this->cube.faces[1].state[0][1] == this->cube.faces[1].getCenter()) &&
+        (this->cube.faces[5].state[0][1] == this->cube.faces[5].getCenter()) &&
+        (this->cube.faces[3].state[0][1] == this->cube.faces[3].getCenter()) &&
+        (this->cube.faces[4].state[0][1] == this->cube.faces[4].getCenter())) {
+        // all edges are solved
+        return 1;
+    }
+    else if ((this->cube.faces[1].state[0][1] != this->cube.faces[1].getCenter()) &&
+             (this->cube.faces[5].state[0][1] != this->cube.faces[5].getCenter()) &&
+             (this->cube.faces[3].state[0][1] != this->cube.faces[3].getCenter()) &&
+             (this->cube.faces[4].state[0][1] != this->cube.faces[4].getCenter())) {
+        // no edges are set
+        return 2;
+    }
+    else if (this->cube.faces[1].state[0][1] == this->cube.faces[1].getCenter()) {
+        // only front edge is set
+        return 3;
+    }
+    else if (this->cube.faces[5].state[0][1] == this->cube.faces[5].getCenter()) {
+        // only left edge is set
+        return 4;
+    }
+    else if (this->cube.faces[3].state[0][1] == this->cube.faces[3].getCenter()) {
+        // only back edge is set
+        return 5;
+    }
+    else {
+        // only right edge is set
+        return 6;
+    }
+}
+
+

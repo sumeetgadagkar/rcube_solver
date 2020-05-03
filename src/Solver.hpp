@@ -29,6 +29,9 @@ private:
     int getLLPattern();
     int getCornersSet();
     int getSetCornerPosition();
+    void setLLEdges();
+
+    int getLLEdgeState();
 };
 
 
