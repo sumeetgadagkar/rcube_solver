@@ -24,14 +24,13 @@ private:
     void setFLCorners(); // set and orient the white(first) layer corners thereby solving the first layer
     int getCornerPos(int col1, int col2, int col3); // find the corner with colors : col1, col2, col3 and return the
     // position
-    void setSLEdges();
-    void setLLCorners();
-    int getLLPattern();
-    int getCornersSet();
-    int getSetCornerPosition();
-    void setLLEdges();
-
-    int getLLEdgeState();
+    void setSLEdges(); // set the second layer edges
+    void setLLCorners(); // set the last layer corners
+    int getLLPattern(); // get the pattern of the yellow edges on the last layer
+    int getCornersSet(); // get the number of top layer corners set correctly
+    int getSetCornerPosition(); // get the state of the last layer corners
+    void setLLEdges(); // set the ast layer edges
+    int getLLEdgeState(); // get the state of the last layer edges
 };
 
 

@@ -29,6 +29,8 @@ public:
     void randomizeCube(std::vector<std::string> &movesMade); // randomly pick 20 valid moves from Cube::validMoves
     // and perform them on the cube and adds the moves made to <movesMade>
     void randomizeCube(); // randomly pick 20 valid moves from Cube::validMoves and perform them on the cube
+    void startMoveRecording(bool clearPrevMoves = false); // start writing every move made
+    void stopMoveRecording(); // stop writing every move made
     virtual ~Cube(); // destructor
 
     std::vector<Face> faces; // vector of class Face to represent the six faces of the cube
@@ -39,11 +41,15 @@ public:
     // faces[4] - right face
     // faces[5] - left face
 
+    std::vector<std::string> recordedMoves; // string vector of moves made
+
 
 private:
     void swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2, bool invertOrder = false); // swap rows and columns
     // of the cube
     static void prettyPrint(int num, bool is256ColorSupported); // pretty printing of cube state with colors
+
+    bool recordMoves; // flag for to check recoding/ non recording mode
 };
 
 // all standard valid moves that can be performed on a standard 3x3 rubik's cube

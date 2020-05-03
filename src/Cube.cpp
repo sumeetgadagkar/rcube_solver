@@ -645,6 +645,11 @@ void Cube::makeMove(const std::string &move) {
     } else {
         printf("\nInvalid Move requested!\n");
     }
+    // check if move needs to be recorded
+    if (this->recordMoves) {
+        // record the move
+        this->recordedMoves.push_back(move);
+    }
 }
 
 void Cube::makeMove(const std::initializer_list<std::string> &moves) {
@@ -727,6 +732,21 @@ void Cube::swapRowCols(int f1, int f2, int rowCol_1, int rowCol_2,
                 this->faces[f1].state[rowIdx1][colIdx1] -
                 this->faces[f2].state[rowIdx2][colIdx2];
     }
+}
+
+void Cube::startMoveRecording(bool clearPrevMoves) {
+    // set <recordMoves> to true
+    this->recordMoves = true;
+
+    // check if previous moves need to be cleared
+    if (clearPrevMoves) {
+        this->recordedMoves.clear();
+    }
+}
+
+void Cube::stopMoveRecording() {
+    // set <recordMoves> to false
+    this->recordMoves = false;
 }
 
 Cube::~Cube() = default;
