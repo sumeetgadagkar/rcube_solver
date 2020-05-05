@@ -28,4 +28,4 @@ rcube_solver:~$ ./rcube_solver
 
 ## Sample Output
 
-![](images/sample.png)
+![Image not found](images/sample.png)
