@@ -20,11 +20,12 @@ before making actual solution moves
 
 ## Compile
 
-```commandline
-> (rcube_solver folder):~$ cmake .
-> (rcube_solver folder):~$ make
-> (rcube_solver folder):~$ ./rcube_solver
+```
+rcube_solver:~$ cmake .
+rcube_solver:~$ make
+rcube_solver:~$ ./rcube_solver
 ```
 
 ## Sample Output
 
+![](images/sample.png)
