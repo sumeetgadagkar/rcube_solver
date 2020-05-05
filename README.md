@@ -7,7 +7,7 @@ For details on the beginners method refer : [Beginners Method](https://ruwix.com
 
 While the steps followed to solve the cube are similar to the beginner's method, the algorithms used may differ vastly.
 The reason for this is that the algorithms used here are better suited for quick memorization and not necessarily suited
-quick solves.
+for quick solves.
 
 Average solution length ~= 410
 
