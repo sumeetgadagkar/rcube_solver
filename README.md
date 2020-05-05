@@ -17,3 +17,14 @@ before making actual solution moves
 ## Built with
 
 [CMake](https://cmake.org/) - v3.15 
+
+## Compile
+
+```commandline
+> (rcube_solver folder):~$ cmake .
+> (rcube_solver folder):~$ make
+> (rcube_solver folder):~$ ./rcube_solver
+```
+
+## Sample Output
+
